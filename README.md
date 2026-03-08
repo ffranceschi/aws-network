@@ -61,6 +61,8 @@ rt-internet-gateway(vincular o internet gateway na aba edge associations)
 10.21.0.0/20 -> vpce-firewall
 10.21.0.0/16 -> local
 
+https://docs.aws.amazon.com/network-firewall/latest/developerguide/arch-igw-ngw.html
+
 [[network_firewall.png]]
 
 
