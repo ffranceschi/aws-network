@@ -4,11 +4,6 @@ variable "aws_region" {
   description = "AWS region for all resources"
 }
 
-variable "hub_account_id" {
-  type        = string
-  description = "AWS Account ID of the hub account (used to read hub remote state)"
-}
-
 variable "dev_account_id" {
   type        = string
   description = "AWS Account ID of the dev spoke account"

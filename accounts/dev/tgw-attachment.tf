@@ -16,6 +16,4 @@ module "tgw_spoke" {
   vpc_id             = module.vpc.vpc_id
   subnet_ids         = module.vpc.tgw_subnet_ids
   environment        = "dev"
-
-  tags = {}
 }
