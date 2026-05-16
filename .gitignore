@@ -1,1 +1,11 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+terraform.tfvars
+backend.hcl
+*.tfplan
+
+# Superpowers
 .superpowers/
