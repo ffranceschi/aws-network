@@ -9,8 +9,4 @@ module "vpc" {
   tgw_subnet_cidrs    = ["10.0.2.0/28", "10.0.3.0/28"]
 
   enable_igw = true
-
-  tags = {
-    Environment = "hub"
-  }
 }

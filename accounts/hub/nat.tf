@@ -11,6 +11,4 @@ resource "aws_nat_gateway" "this" {
   subnet_id     = module.vpc.public_subnet_ids[0]
 
   tags = { Name = "hub-nat-gw" }
-
-  depends_on = [module.vpc]
 }

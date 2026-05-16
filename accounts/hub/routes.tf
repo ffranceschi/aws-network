@@ -11,6 +11,8 @@ resource "aws_route" "public_igw" {
   gateway_id             = module.vpc.igw_id
 }
 
+# Pre-created unconditionally: this return route must exist before dev traffic
+# arrives via NAT, so it cannot be gated on dev_tgw_attachment_done.
 resource "aws_route" "public_to_dev" {
   route_table_id         = aws_route_table.public.id
   destination_cidr_block = "10.10.0.0/16"
