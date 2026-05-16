@@ -78,6 +78,40 @@ resource "aws_s3_bucket_public_access_block" "state_logs" {
   restrict_public_buckets = true
 }
 
+resource "aws_s3_bucket_server_side_encryption_configuration" "state_logs" {
+  bucket = aws_s3_bucket.state_logs.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "state_logs" {
+  bucket = aws_s3_bucket.state_logs.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Sid    = "S3ServerAccessLogsPolicy"
+      Effect = "Allow"
+      Principal = {
+        Service = "logging.s3.amazonaws.com"
+      }
+      Action   = "s3:PutObject"
+      Resource = "${aws_s3_bucket.state_logs.arn}/state-access-logs/*"
+      Condition = {
+        ArnLike = {
+          "aws:SourceArn" = aws_s3_bucket.state.arn
+        }
+        StringEquals = {
+          "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+        }
+      }
+    }]
+  })
+}
+
 resource "aws_dynamodb_table" "lock" {
   name         = "${var.project_name}-tflock"
   billing_mode = "PAY_PER_REQUEST"
