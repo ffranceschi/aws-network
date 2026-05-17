@@ -1,7 +1,6 @@
 resource "aws_ram_resource_share" "tgw" {
   name                      = "hub-tgw-share"
   allow_external_principals = false
-  description               = "Shares Hub Transit Gateway with dev spoke account"
 
   tags = { Name = "hub-tgw-share" }
 }
