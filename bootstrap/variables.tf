@@ -11,3 +11,9 @@ variable "project_name" {
 variable "owner" {
   type = string
 }
+
+variable "profile" {
+  type        = string
+  description = "AWS CLI profile to use for authentication"
+}
+

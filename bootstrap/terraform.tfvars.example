@@ -1,0 +1,4 @@
+aws_region   = "us-east-1"
+project_name = "aws-network-poc"
+owner        = "<OWNER>"
+profile      = "<AWS_CLI_PROFILE>"
