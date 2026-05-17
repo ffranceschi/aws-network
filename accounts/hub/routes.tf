@@ -69,18 +69,6 @@ resource "aws_network_acl" "tgw_attachment" {
     to_port    = 65535
   }
 
-  # ICMP return traffic (ping responses from internet)
-  ingress {
-    rule_no    = 300
-    protocol   = "icmp"
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = -1
-    to_port    = -1
-    icmp_type  = -1
-    icmp_code  = -1
-  }
-
   egress {
     rule_no    = 100
     protocol   = "-1"
