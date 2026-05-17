@@ -183,6 +183,7 @@ aws_region     = "us-east-1"
 dev_account_id = "686633026087"
 owner          = "fernando"
 state_bucket   = "aws-network-poc-tfstate-225119180422"
+profile        = "ct8-hub"
 EOF
 ```
 
