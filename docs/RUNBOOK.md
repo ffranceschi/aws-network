@@ -121,8 +121,9 @@ cd ../accounts/hub
 
 ```bash
 cat > backend.hcl << 'EOF'
-bucket = "aws-network-poc-tfstate-225119180422"
-region = "us-east-1"
+bucket  = "aws-network-poc-tfstate-225119180422"
+region  = "us-east-1"
+profile = "ct8-hub"
 EOF
 ```
 
@@ -168,8 +169,9 @@ cd ../dev
 
 ```bash
 cat > backend.hcl << 'EOF'
-bucket = "aws-network-poc-tfstate-225119180422"
-region = "us-east-1"
+bucket  = "aws-network-poc-tfstate-225119180422"
+region  = "us-east-1"
+profile = "ct8-hub"
 EOF
 ```
 

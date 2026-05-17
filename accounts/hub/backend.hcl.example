@@ -1,2 +1,3 @@
-bucket = "aws-network-poc-tfstate-<HUB_ACCOUNT_ID>"
-region = "us-east-1"
+bucket  = "aws-network-poc-tfstate-<HUB_ACCOUNT_ID>"
+region  = "us-east-1"
+profile = "<AWS_CLI_PROFILE_HUB>"
