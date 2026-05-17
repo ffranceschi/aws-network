@@ -24,6 +24,12 @@ variable "state_bucket" {
   description = "S3 bucket name for Terraform remote state"
 }
 
+variable "profile" {
+  type        = string
+  default     = null
+  description = "AWS CLI profile usado como credencial base para o assume_role. Quando null usa a chain padrão."
+}
+
 variable "dev_tgw_attachment_done" {
   type        = bool
   default     = false

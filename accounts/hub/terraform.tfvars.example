@@ -4,3 +4,4 @@ dev_account_id          = "<DEV_ACCOUNT_ID>"
 owner                   = "<OWNER>"
 state_bucket            = "aws-network-poc-tfstate-<HUB_ACCOUNT_ID>"
 dev_tgw_attachment_done = false
+profile                 = "<AWS_CLI_PROFILE_HUB>"

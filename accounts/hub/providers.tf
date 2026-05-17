@@ -9,7 +9,8 @@ terraform {
 }
 
 provider "aws" {
-  region = var.aws_region
+  region  = var.aws_region
+  profile = var.profile
 
   assume_role {
     role_arn = "arn:aws:iam::${var.hub_account_id}:role/TerraformExecutionRole"

@@ -19,3 +19,9 @@ variable "state_bucket" {
   description = "S3 bucket name for Terraform remote state (same bucket as hub, different key)"
 }
 
+variable "profile" {
+  type        = string
+  default     = null
+  description = "AWS CLI profile usado como credencial base para o assume_role. Use ct8-hub pois a trust policy da role dev permite o root da conta hub."
+}
+
