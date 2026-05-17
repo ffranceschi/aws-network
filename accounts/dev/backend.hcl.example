@@ -1,3 +1,2 @@
-bucket         = "aws-network-poc-tfstate-<HUB_ACCOUNT_ID>"
-dynamodb_table = "aws-network-poc-tflock"
-region         = "us-east-1"
+bucket = "aws-network-poc-tfstate-<HUB_ACCOUNT_ID>"
+region = "us-east-1"

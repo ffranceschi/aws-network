@@ -48,11 +48,10 @@ data "terraform_remote_state" "dev" {
   count   = var.dev_tgw_attachment_done ? 1 : 0
   backend = "s3"
   config = {
-    bucket         = var.state_bucket
-    key            = "dev/terraform.tfstate"
-    region         = var.aws_region
-    dynamodb_table = var.lock_table
-    encrypt        = true
+    bucket  = var.state_bucket
+    key     = "dev/terraform.tfstate"
+    region  = var.aws_region
+    encrypt = true
   }
 }
 

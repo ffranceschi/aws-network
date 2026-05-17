@@ -3,5 +3,4 @@ hub_account_id          = "<HUB_ACCOUNT_ID>"
 dev_account_id          = "<DEV_ACCOUNT_ID>"
 owner                   = "<OWNER>"
 state_bucket            = "aws-network-poc-tfstate-<HUB_ACCOUNT_ID>"
-lock_table              = "aws-network-poc-tflock"
 dev_tgw_attachment_done = false

@@ -1,11 +1,10 @@
 data "terraform_remote_state" "hub" {
   backend = "s3"
   config = {
-    bucket         = var.state_bucket
-    key            = "hub/terraform.tfstate"
-    region         = var.aws_region
-    dynamodb_table = var.lock_table
-    encrypt        = true
+    bucket  = var.state_bucket
+    key     = "hub/terraform.tfstate"
+    region  = var.aws_region
+    encrypt = true
   }
 }
 

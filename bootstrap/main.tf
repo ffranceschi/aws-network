@@ -113,19 +113,3 @@ resource "aws_s3_bucket_policy" "state_logs" {
   })
 }
 
-resource "aws_dynamodb_table" "lock" {
-  name         = "${var.project_name}-tflock"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-
-  server_side_encryption {
-    enabled = true
-  }
-
-  tags = merge(local.common_tags, { Name = "${var.project_name}-tflock" })
-}

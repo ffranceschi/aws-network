@@ -19,7 +19,3 @@ variable "state_bucket" {
   description = "S3 bucket name for Terraform remote state (same bucket as hub, different key)"
 }
 
-variable "lock_table" {
-  type        = string
-  description = "DynamoDB table name for Terraform state locking"
-}

@@ -24,11 +24,6 @@ variable "state_bucket" {
   description = "S3 bucket name for Terraform remote state"
 }
 
-variable "lock_table" {
-  type        = string
-  description = "DynamoDB table name for Terraform state locking"
-}
-
 variable "dev_tgw_attachment_done" {
   type        = bool
   default     = false
