@@ -79,9 +79,9 @@ aws iam attach-role-policy \
 
 ---
 
-## Fase 0 — Bootstrap (S3 + DynamoDB)
+## Fase 0 — Bootstrap (S3)
 
-> Executa **uma única vez** na conta hub. Cria o bucket de state e a tabela de lock.
+> Executa **uma única vez** na conta hub. Cria o bucket S3 de state. O locking é feito nativamente pelo S3 via `use_lockfile = true` (Terraform >= 1.10 — sem DynamoDB necessário).
 
 ```bash
 cd bootstrap
@@ -99,15 +99,14 @@ profile      = "ct8-hub"
 terraform init
 
 terraform plan
-# Revisar: deve mostrar 2 S3 buckets + 1 DynamoDB a criar
+# Revisar: deve mostrar 2 S3 buckets a criar (state + logs)
 
 terraform apply
 ```
 
-**Anotar os outputs:**
+**Anotar o output:**
 ```
 state_bucket_name = "aws-network-poc-tfstate-225119180422"
-lock_table_name   = "aws-network-poc-tflock"
 ```
 
 ---
@@ -122,9 +121,8 @@ cd ../accounts/hub
 
 ```bash
 cat > backend.hcl << 'EOF'
-bucket         = "aws-network-poc-tfstate-225119180422"
-dynamodb_table = "aws-network-poc-tflock"
-region         = "us-east-1"
+bucket = "aws-network-poc-tfstate-225119180422"
+region = "us-east-1"
 EOF
 ```
 
@@ -137,7 +135,6 @@ hub_account_id          = "225119180422"
 dev_account_id          = "686633026087"
 owner                   = "fernando"
 state_bucket            = "aws-network-poc-tfstate-225119180422"
-lock_table              = "aws-network-poc-tflock"
 dev_tgw_attachment_done = false
 EOF
 ```
@@ -171,9 +168,8 @@ cd ../dev
 
 ```bash
 cat > backend.hcl << 'EOF'
-bucket         = "aws-network-poc-tfstate-225119180422"
-dynamodb_table = "aws-network-poc-tflock"
-region         = "us-east-1"
+bucket = "aws-network-poc-tfstate-225119180422"
+region = "us-east-1"
 EOF
 ```
 
@@ -185,7 +181,6 @@ aws_region     = "us-east-1"
 dev_account_id = "686633026087"
 owner          = "fernando"
 state_bucket   = "aws-network-poc-tfstate-225119180422"
-lock_table     = "aws-network-poc-tflock"
 EOF
 ```
 
@@ -337,8 +332,6 @@ terraform destroy # destrói o resto
 
 # 3. Bootstrap (por último — state bucket tem prevent_destroy)
 cd ../../bootstrap
-# Remover prevent_destroy manualmente antes, ou:
-terraform destroy -target=aws_dynamodb_table.lock
 # O bucket S3 precisará ser esvaziado manualmente antes do destroy
 aws s3 rm s3://aws-network-poc-tfstate-225119180422 --recursive --profile ct8-hub
 terraform destroy
