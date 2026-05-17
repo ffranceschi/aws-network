@@ -14,6 +14,7 @@ variable "owner" {
 
 variable "profile" {
   type        = string
-  description = "AWS CLI profile to use for authentication"
+  default     = null
+  description = "AWS CLI profile to use for authentication. When null, uses the default credential chain (env vars, instance profile, etc.)"
 }
 
