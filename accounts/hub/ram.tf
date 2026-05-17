@@ -11,6 +11,6 @@ resource "aws_ram_resource_association" "tgw" {
 }
 
 resource "aws_ram_principal_association" "dev" {
-  principal          = "arn:aws:iam::${var.dev_account_id}:root"
+  principal          = var.dev_account_id
   resource_share_arn = aws_ram_resource_share.tgw.arn
 }
