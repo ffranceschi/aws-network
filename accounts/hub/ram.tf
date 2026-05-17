@@ -1,6 +1,6 @@
 resource "aws_ram_resource_share" "tgw" {
   name                      = "hub-tgw-share"
-  allow_external_principals = false
+  allow_external_principals = true
 
   tags = { Name = "hub-tgw-share" }
 }
