@@ -1,0 +1,5 @@
+aws_region      = "us-east-1"
+prod_account_id = "<PROD_ACCOUNT_ID>"
+owner           = "<OWNER>"
+state_bucket    = "aws-network-poc-tfstate-<HUB_ACCOUNT_ID>"
+profile         = "<AWS_CLI_PROFILE_HUB>"  # usa ct8-hub: trust policy da role prod permite hub account root
