@@ -21,6 +21,14 @@ resource "aws_route" "public_to_dev" {
   depends_on = [aws_ec2_transit_gateway_vpc_attachment.hub]
 }
 
+resource "aws_route" "public_to_prod" {
+  route_table_id         = aws_route_table.public.id
+  destination_cidr_block = "10.11.0.0/16"
+  transit_gateway_id     = aws_ec2_transit_gateway.this.id
+
+  depends_on = [aws_ec2_transit_gateway_vpc_attachment.hub]
+}
+
 resource "aws_route_table_association" "public" {
   count          = length(module.vpc.public_subnet_ids)
   subnet_id      = module.vpc.public_subnet_ids[count.index]
