@@ -8,10 +8,49 @@ resource "aws_ec2_transit_gateway" "this" {
   tags = { Name = "hub-tgw" }
 }
 
+# Hub route table — associada ao hub attachment; contém rotas para os spokes
 resource "aws_ec2_transit_gateway_route_table" "main" {
   transit_gateway_id = aws_ec2_transit_gateway.this.id
 
-  tags = { Name = "hub-tgw-rt-main" }
+  tags = { Name = "hub-tgw-rt-hub" }
+}
+
+# Dev route table — associada ao dev attachment; rotas apenas para o hub (sem rota para prod)
+resource "aws_ec2_transit_gateway_route_table" "dev" {
+  transit_gateway_id = aws_ec2_transit_gateway.this.id
+
+  tags = { Name = "hub-tgw-rt-dev" }
+}
+
+resource "aws_ec2_transit_gateway_route" "dev_to_hub" {
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.dev.id
+  destination_cidr_block         = "10.0.0.0/16"
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.hub.id
+}
+
+resource "aws_ec2_transit_gateway_route" "dev_default" {
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.dev.id
+  destination_cidr_block         = "0.0.0.0/0"
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.hub.id
+}
+
+# Prod route table — associada ao prod attachment; rotas apenas para o hub (sem rota para dev)
+resource "aws_ec2_transit_gateway_route_table" "prod" {
+  transit_gateway_id = aws_ec2_transit_gateway.this.id
+
+  tags = { Name = "hub-tgw-rt-prod" }
+}
+
+resource "aws_ec2_transit_gateway_route" "prod_to_hub" {
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.prod.id
+  destination_cidr_block         = "10.0.0.0/16"
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.hub.id
+}
+
+resource "aws_ec2_transit_gateway_route" "prod_default" {
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.prod.id
+  destination_cidr_block         = "0.0.0.0/0"
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.hub.id
 }
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "hub" {
@@ -30,18 +69,6 @@ resource "aws_ec2_transit_gateway_route_table_association" "hub" {
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.main.id
 }
 
-resource "aws_ec2_transit_gateway_route" "to_hub_vpc" {
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.main.id
-  destination_cidr_block         = "10.0.0.0/16"
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.hub.id
-}
-
-resource "aws_ec2_transit_gateway_route" "default_to_hub" {
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.main.id
-  destination_cidr_block         = "0.0.0.0/0"
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.hub.id
-}
-
 # Phase 2: added after accounts/dev is applied
 # Route table association MUST be done by hub (TGW owner) not by spoke account
 data "terraform_remote_state" "dev" {
@@ -58,7 +85,7 @@ data "terraform_remote_state" "dev" {
 resource "aws_ec2_transit_gateway_route_table_association" "dev" {
   count                          = var.dev_tgw_attachment_done ? 1 : 0
   transit_gateway_attachment_id  = data.terraform_remote_state.dev[0].outputs.tgw_attachment_id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.main.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.dev.id
 }
 
 resource "aws_ec2_transit_gateway_route" "to_dev_vpc" {
@@ -84,7 +111,7 @@ data "terraform_remote_state" "prod" {
 resource "aws_ec2_transit_gateway_route_table_association" "prod" {
   count                          = var.prod_tgw_attachment_done ? 1 : 0
   transit_gateway_attachment_id  = data.terraform_remote_state.prod[0].outputs.tgw_attachment_id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.main.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.prod.id
 }
 
 resource "aws_ec2_transit_gateway_route" "to_prod_vpc" {
