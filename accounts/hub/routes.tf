@@ -50,6 +50,24 @@ resource "aws_route" "tgw_attachment_default" {
   nat_gateway_id         = aws_nat_gateway.this.id
 }
 
+# Rotas diretas para os spokes via TGW — necessário para que instâncias no hub
+# respondam com source IP preservado (sem passar pelo NAT GW)
+resource "aws_route" "tgw_attachment_to_dev" {
+  route_table_id         = aws_route_table.tgw_attachment.id
+  destination_cidr_block = "10.10.0.0/16"
+  transit_gateway_id     = aws_ec2_transit_gateway.this.id
+
+  depends_on = [aws_ec2_transit_gateway_vpc_attachment.hub]
+}
+
+resource "aws_route" "tgw_attachment_to_prod" {
+  route_table_id         = aws_route_table.tgw_attachment.id
+  destination_cidr_block = "10.11.0.0/16"
+  transit_gateway_id     = aws_ec2_transit_gateway.this.id
+
+  depends_on = [aws_ec2_transit_gateway_vpc_attachment.hub]
+}
+
 resource "aws_route_table_association" "tgw_attachment" {
   count          = length(module.vpc.tgw_subnet_ids)
   subnet_id      = module.vpc.tgw_subnet_ids[count.index]
