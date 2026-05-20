@@ -120,3 +120,16 @@ resource "aws_ec2_transit_gateway_route" "to_prod_vpc" {
   destination_cidr_block         = "10.11.0.0/16"
   transit_gateway_attachment_id  = data.terraform_remote_state.prod[0].outputs.tgw_attachment_id
 }
+
+# Blackhole routes — spoke-to-spoke traffic is explicitly dropped
+resource "aws_ec2_transit_gateway_route" "dev_blackhole_prod" {
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.dev.id
+  destination_cidr_block         = "10.11.0.0/16"
+  blackhole                      = true
+}
+
+resource "aws_ec2_transit_gateway_route" "prod_blackhole_dev" {
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.prod.id
+  destination_cidr_block         = "10.10.0.0/16"
+  blackhole                      = true
+}
