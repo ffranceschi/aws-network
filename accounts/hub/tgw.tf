@@ -68,6 +68,8 @@ resource "aws_ec2_transit_gateway_route" "to_dev_vpc" {
   transit_gateway_attachment_id  = data.terraform_remote_state.dev[0].outputs.tgw_attachment_id
 }
 
+# Phase 2: added after accounts/prod is applied
+# Route table association MUST be done by hub (TGW owner) not by spoke account
 data "terraform_remote_state" "prod" {
   count   = var.prod_tgw_attachment_done ? 1 : 0
   backend = "s3"

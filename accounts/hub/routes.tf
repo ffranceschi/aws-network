@@ -21,6 +21,8 @@ resource "aws_route" "public_to_dev" {
   depends_on = [aws_ec2_transit_gateway_vpc_attachment.hub]
 }
 
+# Pre-created unconditionally: this return route must exist before prod traffic
+# arrives via NAT, so it cannot be gated on prod_tgw_attachment_done.
 resource "aws_route" "public_to_prod" {
   route_table_id         = aws_route_table.public.id
   destination_cidr_block = "10.11.0.0/16"
