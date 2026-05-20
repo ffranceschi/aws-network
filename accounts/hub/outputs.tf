@@ -10,7 +10,7 @@ output "tgw_id" {
 
 output "tgw_route_table_id" {
   value       = aws_ec2_transit_gateway_route_table.main.id
-  description = "TGW main route table ID — used by hub phase 2 to associate spoke attachments"
+  description = "TGW hub route table ID — hub attachment RT, contains routes to spoke VPCs"
 }
 
 output "nat_gateway_id" {
