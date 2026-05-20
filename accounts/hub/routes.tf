@@ -79,6 +79,15 @@ resource "aws_network_acl" "tgw_attachment" {
     to_port    = 65535
   }
 
+  ingress {
+    rule_no    = 300
+    protocol   = "icmp"
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
   egress {
     rule_no    = 100
     protocol   = "-1"
