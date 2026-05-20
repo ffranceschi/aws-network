@@ -35,3 +35,14 @@ variable "dev_tgw_attachment_done" {
   default     = false
   description = "Set to true after accounts/dev is applied to add TGW route and association for dev spoke"
 }
+
+variable "prod_account_id" {
+  type        = string
+  description = "AWS Account ID of the prod spoke account"
+}
+
+variable "prod_tgw_attachment_done" {
+  type        = bool
+  default     = false
+  description = "Set to true after accounts/prod is applied to add TGW route and association for prod spoke"
+}
